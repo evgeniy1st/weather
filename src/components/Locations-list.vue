@@ -1,6 +1,15 @@
 <template>
-  <div class="">
-    <Location/>
+  <div class="location-list">
+    <button @click="$emit('settings-open')">settings</button>
+    <div 
+    v-for="(location, n) in locationList" 
+    :key="n"
+    >
+    <Location 
+    :location="location" 
+    :n="n" 
+    />
+    </div>
   </div>
 </template>
 
@@ -9,13 +18,15 @@ import Location from './Location';
 
 export default {
   name: 'LocationsList',
+  props: {
+    locationList: Array
+  },
   components: {
     Location
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 </style>
