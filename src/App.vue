@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import CONST from './utils'
 import LocationsList from './components/Locations-list'
 import Settings from './components/Settings'
 
@@ -30,9 +31,9 @@ export default {
   data() {
     return {
       settings: false,
-      appid: `&appid=f9b67de5dadca5ac83f5c454e3da8dbf`,
-      units: `&units=metric`,
-      url: `https://api.openweathermap.org/data/2.5/weather?q=`,
+      appid: CONST.APPID,
+      units: CONST.UNITS,
+      url: CONST.ENDPINT,
       newLocation: null,
       locationList: []
     }

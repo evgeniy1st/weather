@@ -1,7 +1,6 @@
 <template>
   <div id="settigs">
     <button @click="$emit('settings-close')">close</button>
-
     <draggable 
     tag="ul" 
     :list="list" 
@@ -23,14 +22,18 @@
 
     <div>
       <h6>Add new city</h6>
-      <input v-model="newLocation">
-      <button @click="writeNewLocation">add</button>
+      <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
+      <form @submit.prevent="writeNewLocation">
+        <input v-model="newLocation" @input="resetError">
+        <button>add</button>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
-import draggable from "vuedraggable";
+import draggable from "vuedraggable"
+import CONST from '../utils'
 
 export default {
   name: 'Settings',
@@ -43,12 +46,13 @@ export default {
 
   data() {
     return {
-      appid: `&appid=f9b67de5dadca5ac83f5c454e3da8dbf`,
-      units: `&units=metric`,
-      url: `https://api.openweathermap.org/data/2.5/weather?q=`,
+      appid: CONST.APPID,
+      units: CONST.UNITS,
+      url: CONST.ENDPINT,
       newLocation: null,
       list: this.locationList,
-      dragging: false
+      dragging: false,
+      errorMessage: null
     }
   },
 
@@ -59,8 +63,15 @@ export default {
   },
 
   methods: {
+    resetError() {
+      if (this.errorMessage) {
+        this.errorMessage = null;
+      }
+    },
+
     async writeNewLocation() {
-      if (!this.newLocation || this.locationList.includes(this.newLocation)) {
+      if (!this.newLocation) {
+        this.errorMessage = CONST.ERROR_MESSAGE.EMPTY_INPUT
         return;
       }
       try {
@@ -68,10 +79,17 @@ export default {
         if (response.ok) {
           this.newLocation = '';
           const city = await response.json();
-          this.$emit('write-location', city.name)
+          if (this.locationList.includes(city.name)) {
+            this.errorMessage = CONST.ERROR_MESSAGE.DOUBLE_CITY
+            return
+          } else {
+            this.$emit('write-location', city.name);
+          }
+        } else {
+          this.errorMessage = CONST.ERROR_MESSAGE.NO_FORECAST
         }
-      } catch (e) {
-        alert(e.message)
+      } catch (error) {
+        this.errorMessage = error.message;
       }
     }
   }
