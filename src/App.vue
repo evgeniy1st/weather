@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-container">
     <LocationsList
       v-show="!settings"
       :locationList="locationList"
@@ -69,10 +69,13 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  font-weight: bold;
-
-}
-
+<style scoped>
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+  .main-container {
+    font-family: 'Roboto Condensed', sans-serif;
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: 320px;
+    padding: 10px;
+  }
 </style>

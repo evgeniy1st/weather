@@ -1,6 +1,9 @@
 <template>
-  <div id="settigs">
-    <button @click="$emit('settings-close')">close</button>
+  <div class="settings">
+    <div class="container">
+      <span class="settings-title">Settings</span>
+      <button class="close-btn" @click="$emit('settings-close')"></button>
+    </div>
     <draggable 
     tag="ul" 
     :list="list" 
@@ -13,19 +16,22 @@
         v-for="(location, n) in locationList" 
         :key="n"
       >
-      <span class="handle">drag</span>
-      <span>{{ n+1 }}</span>
-      <span class="location">{{ location }}, </span>
-      <button @click="$emit('remove-location', n)">remove</button>
+      <span class="handle">
+        <span class="handle-line"></span>
+        <span class="handle-line"></span>
+        <span class="handle-line"></span>
+        </span>
+      <span class="location-name">{{ location }} </span>
+      <button class="remove-btn" @click="$emit('remove-location', n)"></button>
       </li>
     </draggable>
 
     <div>
-      <h6>Add new city</h6>
+      <p>Add new city:</p>
       <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
-      <form @submit.prevent="writeNewLocation">
-        <input v-model="newLocation" @input="resetError">
-        <button>add</button>
+      <form class="add-form" @submit.prevent="writeNewLocation">
+        <input class="input-add-location" v-model="newLocation" @input="resetError">
+        <button class="add-btn"></button>
       </form>
     </div>
   </div>
@@ -96,10 +102,156 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  font-weight: bold;
-
+<style scoped>
+.settings {
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: 320px;
 }
 
+.close-btn {
+  display: inline-block;
+  background-image: url('../img/close.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;
+  box-shadow: none;
+  width: 35px;
+  height: 35px;
+  background-color: transparent;
+  opacity: 0.8;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  opacity: 1;
+}
+
+.close-btn:active {
+  opacity: 0.7;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid;
+  align-items: flex-end;
+}
+
+.settings-title {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.list-group {
+  list-style: none;
+  margin: 30px auto;
+  padding: 0;
+}
+
+.list-group-item {
+  margin: 15px 0;
+  padding: 5px 10px;
+  background-color: rgb(206, 206, 206);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.handle {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 20px;
+  height: 15px;
+  margin-right: 20px;
+  cursor: move;
+}
+
+.handle-line {
+  width: 20px;
+  height: 2px;
+  background-color: #000;
+}
+
+.location-name {
+  text-transform: uppercase;
+}
+
+.remove-btn {
+  display: inline-block;
+  background-image: url('../img/remove.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;
+  box-shadow: none;
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  opacity: 0.8;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  opacity: 1;
+}
+
+.remove-btn:active {
+  opacity: 0.7;
+}
+
+.input-add-location {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 20px;
+  border: none;
+  border-bottom: 1px solid;
+  outline: none;
+}
+
+.input-add-location:focus {
+  border-bottom: 2px solid;
+}
+
+.add-btn {
+  display: inline-block;
+  background-image: url('../img/enter.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;
+  box-shadow: none;
+  width: 35px;
+  height: 35px;
+  background-color: transparent;
+  opacity: 0.8;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  opacity: 1;
+}
+
+.add-btn:active {
+  opacity: 0.7;
+}
+
+.add-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error-message {
+  padding: 7px 5px;
+  background-color: rgb(255, 125, 125);
+  border-radius: 2px;
+}
 </style>

@@ -1,25 +1,32 @@
 <template>
-  <div id="location">    
-    <div>
-      <span class="location">{{ location }}, </span>
-      <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
-      <div v-if="loading && !errorMessage"><h1>Загрузка</h1></div>
-      <template v-if="locationData && !loading">
-        <span>{{locationData.sys.country}}</span>
-        <br>
-        <img :src="urlImg + locationData.weather[0].icon + `.png`" alt="">
-        <span>{{Math.round(locationData.main.temp)}}&#176;C</span>
-        <br>
-        <span>feels like {{Math.round(locationData.main.feels_like)}}&#176;C. </span>
+  <div class="location-cart">    
+    <span class="location-name">{{ location }}, </span>
+    <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
+    <div v-if="loading && !errorMessage"><img src="../img/placeholder.png" alt=""></div>
+    <template v-if="locationData && !loading">
+      <span class="location-country">{{locationData.sys.country}}</span>
+      <div class="temp-container">
+        <img class="icon" :src="urlImg + locationData.weather[0].icon + `.png`" alt="">
+      <span class="temp">{{Math.round(locationData.main.temp)}}&#176;C</span>
+      </div>
+
+      <div class="feels-like-container">
+        <span>Feels like {{Math.round(locationData.main.feels_like)}}&#176;C. </span>
         <span>{{locationData.weather[0].description[0].toUpperCase() + locationData.weather[0].description.slice(1)}}</span>
-        <br>
-        <span>{{locationData.wind.speed}}/</span><span>{{getWindDirection(locationData.wind.deg)}} </span>
+      </div>
+
+      <div class="container">
+        <div>
+          <span>{{locationData.wind.speed}}ms/ </span><span>{{getWindDirection(locationData.wind.deg)}} </span>
+        </div>
         <span>Pressure: {{locationData.main.pressure}} hPa</span>
-        <br>
+      </div>
+
+      <div class="container">
         <span>Humidity: {{locationData.main.humidity}}%</span>
         <span>Visibility: {{(locationData.visibility / 1000).toFixed(1)}} km</span>
-      </template>
-    </div>
+      </div>
+    </template>  
   </div>
 </template>
 
@@ -74,9 +81,51 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  font-weight: bold;
-}
+<style scoped>
+  .location-cart {
+    width: 250px;
+    margin: 30px 0;
+  }
 
+  .location-name, 
+  .location-country {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  .icon {
+    margin-left: auto;
+    display: inline-block;
+  }
+
+  .temp-container {
+    display: flex;
+    margin-bottom: 15px;
+  }
+
+  .temp {
+    font-size: 40px;
+  }
+
+  .feels-like-container {
+    margin-bottom: 15px;
+    font-size: 22px;
+  }
+
+  .container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .container span {
+    text-align: left;
+    widows: 50%;
+  }
+
+  .error-message {
+    padding: 7px 5px;
+    background-color: rgb(255, 125, 125);
+    border-radius: 2px;
+}
 </style>
